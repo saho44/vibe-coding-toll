@@ -5,11 +5,6 @@ Dieses interaktive Tool analysiert Texte und schreibt sie in verschiedenen Stile
 
 ## 🔧 Features
 - Stimmungserkennung (positiv, negativ, neutral)
-- Umschreiben in verschiedene Stile (humorvoll, dramatisch, poetisch)
+- Umschreiben in verschiedene Stile (humorvoll, dramatisch, poetisch,...)
 - Interaktive Web-App mit Streamlit
 
-## 🛠 Installation
-Falls du es lokal testen willst:
-```bash
-pip install streamlit openai textblob
-streamlit run vibe_coding_app.py
