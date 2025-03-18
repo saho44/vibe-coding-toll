@@ -1,10 +1,10 @@
 import streamlit as st
 import openai
+import os
 from textblob import TextBlob
 
-# OpenAI API-Key aus Streamlit Secrets laden
-import os
-openai_api_key = os.getenv("OPENAI_API_KEY", "DEIN_API_KEY")
+# API-Key sicher aus Streamlit Secrets laden
+openai_api_key = st.secrets["OPENAI_API_KEY"]
 
 # OpenAI-Client initialisieren
 client = openai.OpenAI(api_key=openai_api_key)
@@ -32,7 +32,7 @@ if st.button("Analyse starten"):
 
 # Auswahl einer neuen Stimmung
 vibe = st.selectbox("Wähle eine neue Stimmung für den Text:",
-                    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell"])
+                    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell", "traurig", "kindisch"])
 
 def rewrite_text_with_vibe(text, vibe):
     """Schreibt den Text mit einer bestimmten Stimmung um."""
@@ -50,3 +50,4 @@ if st.button("Text umschreiben"):
     neuer_text = rewrite_text_with_vibe(text, vibe)
     st.subheader("✍️ Neuer Text:")
     st.write(neuer_text)
+
