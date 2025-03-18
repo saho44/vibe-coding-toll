@@ -2,11 +2,14 @@ import streamlit as st
 from transformers import pipeline
 from textblob import TextBlob
 
-# Modell für Text-Generierung von Hugging Face (GPT-2) laden
-generator = pipeline("text-generation", model="gpt2")
+# Kleineres Modell laden (distilgpt2 statt gpt2)
+generator = pipeline(
+    "text-generation",
+    model="distilgpt2"
+)
 
-# Titel der Streamlit-App
-st.title("Vibe Coding: Spiel mit Textstimmungen!")
+# Streamlit App-Header
+st.title("Vibe Coding: Text in verschiedene Stimmungen umschreiben!")
 
 # Eingabefeld für den Benutzertext
 text = st.text_area("Gib einen Text ein:", "Heute war ein schöner Tag!")
@@ -32,20 +35,25 @@ if st.button("Analyse starten"):
 # Auswahl einer neuen Stimmung
 vibe = st.selectbox(
     "Wähle eine neue Stimmung für den Text:",
-    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell", "kindisch"]
+    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell"]
 )
 
 def rewrite_text_with_vibe(text, vibe):
     """
-    Schreibt den Text mithilfe des GPT-2 Modells in einem bestimmten Stil um.
+    Schreibt den Text mithilfe des distilgpt2-Modells in einem bestimmten Stil um.
     """
     prompt = f"Schreibe den folgenden Text im Stil von '{vibe}': {text}"
-    # Generiere Text mit maximal 100 Tokens
-    response = generator(prompt, max_length=100, num_return_sequences=1)
+    
+    # Reduziere max_length, damit kein Speicherfehler auftritt
+    response = generator(
+        prompt,
+        max_length=80,         # Gesamtlänge: Prompt + generierte Tokens
+        num_return_sequences=1
+    )
+    
     return response[0]["generated_text"]
 
 if st.button("Text umschreiben"):
     neuer_text = rewrite_text_with_vibe(text, vibe)
     st.subheader("Neuer Text:")
     st.write(neuer_text)
-
