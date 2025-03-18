@@ -1,13 +1,9 @@
 import streamlit as st
-import openai
-import os
+from transformers import pipeline
 from textblob import TextBlob
 
-# API-Key sicher aus Streamlit Secrets laden
-openai_api_key = st.secrets["OPENAI_API_KEY"]
-
-# OpenAI-Client initialisieren
-client = openai.OpenAI(api_key=openai_api_key)
+# Hugging Face Modell laden (GPT-2 oder ein anderes)
+generator = pipeline("text-generation", model="gpt2")
 
 # Streamlit App-Header
 st.title("🎭 Vibe Coding: Spiel mit Textstimmungen!")
@@ -32,22 +28,17 @@ if st.button("Analyse starten"):
 
 # Auswahl einer neuen Stimmung
 vibe = st.selectbox("Wähle eine neue Stimmung für den Text:",
-                    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell", "traurig", "kindisch"])
+                    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell"])
 
 def rewrite_text_with_vibe(text, vibe):
-    """Schreibt den Text mit einer bestimmten Stimmung um."""
-    prompt = f"Schreibe den folgenden Text im Stil von '{vibe}':\n\n{text}"
+    """Schreibt den Text mit einer bestimmten Stimmung um (Hugging Face)."""
+    prompt = f"Schreibe den folgenden Text im Stil von '{vibe}': {text}"
     
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7
-    )
+    response = generator(prompt, max_length=100, num_return_sequences=1)
     
-    return response.choices[0].message.content
+    return response[0]["generated_text"]
 
 if st.button("Text umschreiben"):
     neuer_text = rewrite_text_with_vibe(text, vibe)
     st.subheader("✍️ Neuer Text:")
     st.write(neuer_text)
-
