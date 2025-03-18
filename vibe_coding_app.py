@@ -32,9 +32,11 @@ def rewrite_text_with_vibe(text, vibe):
     prompt = f"Schreibe den folgenden Text im Stil von '{vibe}':\n\n{text}"
     response = openai.ChatCompletion.create(
         model="gpt-4",
-        messages=[{"role": "system", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7
     )
     return response["choices"][0]["message"]["content"]
+
 
 if st.button("Text umschreiben"):
     neuer_text = rewrite_text_with_vibe(text, vibe)
