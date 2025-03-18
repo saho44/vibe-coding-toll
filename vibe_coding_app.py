@@ -32,7 +32,7 @@ if st.button("Analyse starten"):
 # Auswahl einer neuen Stimmung
 vibe = st.selectbox(
     "Wähle eine neue Stimmung für den Text:",
-    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell"]
+    ["humorvoll", "dramatisch", "motivierend", "poetisch", "sarkastisch", "formell", "kindisch"]
 )
 
 def rewrite_text_with_vibe(text, vibe):
