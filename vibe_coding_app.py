@@ -3,7 +3,8 @@ import openai
 from textblob import TextBlob
 
 # OpenAI API-Key aus Streamlit Secrets laden
-openai_api_key = st.secrets["OPENAI_API_KEY"]
+import os
+openai_api_key = os.getenv("OPENAI_API_KEY", "DEIN_API_KEY")
 
 # OpenAI-Client initialisieren
 client = openai.OpenAI(api_key=openai_api_key)
